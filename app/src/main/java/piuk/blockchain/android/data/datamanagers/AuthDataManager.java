@@ -148,6 +148,27 @@ public class AuthDataManager {
     }
 
     /**
+     * Creates a new HD watch only Wallet and saves it to the API.
+     *
+     * @param password   The user's chosen password
+     * @param walletName The name for the wallet, usually some default that has been localised
+     * @param email      The user's email address
+     * @return An {@link Observable} seedhex
+     */
+    public Observable<String> createWatchOnlyHdWallet(String password, String walletName, String email) {
+        return payloadDataManager.createWatchOnlyHdWallet(password, walletName, email)
+                .doOnNext(seedHex -> {
+                    // Successfully created and saved
+                    appUtil.setNewlyCreated(true);
+                    prefsUtil.setValue(PrefsUtil.KEY_GUID, payloadDataManager.getWallet().getGuid());
+                    appUtil.setSharedKey(payloadDataManager.getWallet().getSharedKey());
+
+                    // TODO: 09/05/2017 Encrypt seed and store it securely
+                    prefsUtil.setValue("seedHex",seedHex);
+                });
+    }
+
+    /**
      * Restores a HD Wallet from a valid 12 word mnemonic whilst creating a new login on the
      * website. Saves the wallet if successful.
      *
@@ -166,6 +187,32 @@ public class AuthDataManager {
                     appUtil.setNewlyCreated(true);
                     prefsUtil.setValue(PrefsUtil.KEY_GUID, payload.getGuid());
                     appUtil.setSharedKey(payload.getSharedKey());
+                });
+    }
+
+    /**
+     * Restores a HD Wallet from a valid 12 word mnemonic whilst creating a new login on the
+     * website. Saves the wallet if successful.
+     *
+     * @param email    The user's email address
+     * @param password The user's chosen password
+     * @param mnemonic A valid 12 word mnemonic for an existing Wallet
+     * @return An {@link Observable} wrapping a {@link Wallet} object
+     */
+    public Observable<String> restoreWatchOnlyHdWallet(String email, String password, String mnemonic) {
+        return payloadDataManager.restoreWatchOnlyHdWallet(
+                mnemonic,
+                stringUtils.getString(R.string.default_wallet_name),
+                email,
+                password)
+                .doOnNext(seedHex -> {
+                    appUtil.setNewlyCreated(true);
+                    prefsUtil.setValue(PrefsUtil.KEY_GUID, payloadDataManager.getWallet().getGuid());
+                    appUtil.setSharedKey(payloadDataManager.getWallet().getSharedKey());
+
+
+                    // TODO: 09/05/2017 Encrypt seed and store it securely
+                    prefsUtil.setValue("seedHex",seedHex);
                 });
     }
 

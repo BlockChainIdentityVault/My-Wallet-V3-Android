@@ -4,17 +4,22 @@ import android.util.Log;
 import android.util.Pair;
 
 import info.blockchain.wallet.payload.PayloadManager;
+import piuk.blockchain.android.injection.Injector;
 
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.inject.Inject;
+
 public class BackupWalletUtil {
 
-    // TODO: 16/03/2017 Inject PayloadManager through constructor and access this class via ViewModels
+    @Inject protected PrefsUtil prefs;
+    @Inject protected PayloadManager payloadManager;
+
     public BackupWalletUtil() {
-        // Empty Constructor
+        Injector.getInstance().getAppComponent().inject(this);
     }
 
     /**
@@ -55,9 +60,12 @@ public class BackupWalletUtil {
      */
     public List<String> getMnemonic(String secondPassword) {
 
+        // TODO: 10/05/2017 Get seed from secure place
+        String seedHex = prefs.getValue("seedHex", null);
+
         try {
-            PayloadManager.getInstance().getPayload().decryptHDWallet(0, secondPassword);
-            return PayloadManager.getInstance().getPayload().getHdWallets().get(0).getMnemonic();
+            payloadManager.getPayload().decryptHDWallet(0, secondPassword);
+            return payloadManager.getPayload().getHdWallets().get(0).getMnemonic(seedHex);
         } catch (Exception e) {
             Log.e(BackupWalletUtil.class.getSimpleName(), "getMnemonic: ", e);
             return null;

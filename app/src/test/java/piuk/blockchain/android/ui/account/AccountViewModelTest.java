@@ -179,7 +179,7 @@ public class AccountViewModelTest {
     @Test
     public void createNewAccountSuccessful() throws Exception {
         // Arrange
-        when(accountDataManager.createNewAccount(anyString(), isNull()))
+        when(accountDataManager.createNewAccount(anyString(), isNull(), isNull()))
                 .thenReturn(Observable.just(new Account()));
         // Act
         subject.createNewAccount("");
@@ -196,7 +196,7 @@ public class AccountViewModelTest {
     @Test
     public void createNewAccountDecryptionException() throws Exception {
         // Arrange
-        when(accountDataManager.createNewAccount(anyString(), isNull()))
+        when(accountDataManager.createNewAccount(anyString(), isNull(), isNull()))
                 .thenReturn(Observable.error(new DecryptionException()));
         // Act
         subject.createNewAccount("");
@@ -211,7 +211,7 @@ public class AccountViewModelTest {
     @Test
     public void createNewAccountPayloadException() throws Exception {
         // Arrange
-        when(accountDataManager.createNewAccount(anyString(), isNull()))
+        when(accountDataManager.createNewAccount(anyString(), isNull(), isNull()))
                 .thenReturn(Observable.error(new PayloadException()));
         // Act
         subject.createNewAccount("");
@@ -226,7 +226,7 @@ public class AccountViewModelTest {
     @Test
     public void createNewAccountUnknownException() throws Exception {
         // Arrange
-        when(accountDataManager.createNewAccount(anyString(), isNull()))
+        when(accountDataManager.createNewAccount(anyString(), isNull(), isNull()))
                 .thenReturn(Observable.error(new Exception()));
         // Act
         subject.createNewAccount("");

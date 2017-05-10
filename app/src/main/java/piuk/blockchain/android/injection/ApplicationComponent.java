@@ -14,6 +14,7 @@ import piuk.blockchain.android.ui.base.BaseAuthActivity;
 import piuk.blockchain.android.ui.contacts.pairing.ContactPairingMethodViewModel;
 import piuk.blockchain.android.ui.receive.ReceiveCurrencyHelper;
 import piuk.blockchain.android.util.AppUtil;
+import piuk.blockchain.android.util.BackupWalletUtil;
 import piuk.blockchain.android.util.ExchangeRateFactory;
 import piuk.blockchain.android.util.exceptions.LoggingExceptionHandler;
 
@@ -54,4 +55,6 @@ public interface ApplicationComponent {
     void inject(BaseAuthActivity baseAuthActivity);
 
     void inject(OnboardingDataManager onboardingDataManager);
+
+    void inject(BackupWalletUtil backupWalletUtil);
 }

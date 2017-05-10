@@ -153,8 +153,8 @@ public class RecoverFundsViewModelTest {
         intent.putExtra(KEY_INTENT_EMAIL, "email");
         when(mActivity.getPageIntent()).thenReturn(intent);
         when(mActivity.getRecoveryPhrase()).thenReturn("one two three four five six seven eight nine ten eleven twelve");
-        when(mAuthDataManager.restoreHdWallet(anyString(), anyString(), anyString()))
-                .thenReturn(Observable.just(new Wallet()));
+        when(mAuthDataManager.restoreWatchOnlyHdWallet(anyString(), anyString(), anyString()))
+                .thenReturn(Observable.just(new String()));
         // Act
         mSubject.onContinueClicked();
         // Assert
@@ -177,7 +177,7 @@ public class RecoverFundsViewModelTest {
         intent.putExtra(KEY_INTENT_EMAIL, "email");
         when(mActivity.getPageIntent()).thenReturn(intent);
         when(mActivity.getRecoveryPhrase()).thenReturn("one two three four five six seven eight nine ten eleven twelve");
-        when(mAuthDataManager.restoreHdWallet(anyString(), anyString(), anyString())).thenReturn(Observable.error(new Throwable()));
+        when(mAuthDataManager.restoreWatchOnlyHdWallet(anyString(), anyString(), anyString())).thenReturn(Observable.error(new Throwable()));
         // Act
         mSubject.onContinueClicked();
         // Assert

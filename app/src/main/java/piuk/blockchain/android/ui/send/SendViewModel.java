@@ -943,6 +943,10 @@ public class SendViewModel extends BaseViewModel {
                 account = ((Account) sendModel.pendingTransaction.sendingObject.accountObject);
                 changeAddress = payloadManager.getNextChangeAddress(account);
 
+                // TODO: 10/05/2017 Retrieve seed
+                String seedHex = prefsUtil.getValue("seedHex", null);
+                payloadManager.getPayload().getHdWallets().get(0).instantiateBip44WalletFromSeed(seedHex);
+
                 if (payloadManager.getPayload().isDoubleEncryption()) {
                     payloadManager.getPayload()
                             .decryptHDWallet(0, sendModel.verifiedSecondPassword);

@@ -8,15 +8,19 @@ import android.util.Log;
 
 import info.blockchain.wallet.api.PersistentUrls;
 import info.blockchain.wallet.exceptions.DecryptionException;
+import info.blockchain.wallet.exceptions.HDWalletException;
 import info.blockchain.wallet.exceptions.PayloadException;
 import info.blockchain.wallet.payload.data.Account;
 import info.blockchain.wallet.payload.data.LegacyAddress;
 import info.blockchain.wallet.util.FormatsUtil;
 import info.blockchain.wallet.util.PrivateKeyFactory;
 
+import org.apache.commons.codec.DecoderException;
 import org.bitcoinj.core.ECKey;
 import org.bitcoinj.crypto.BIP38PrivateKey;
+import org.bitcoinj.crypto.MnemonicException;
 
+import java.io.IOException;
 import java.math.BigInteger;
 import java.util.List;
 
@@ -126,8 +130,11 @@ public class AccountViewModel extends BaseViewModel {
             return;
         }
 
+        // TODO: 10/05/2017 Get seed from secure place
+        String seedHex = prefsUtil.getValue("seedHex", null);
+
         compositeDisposable.add(
-                accountDataManager.createNewAccount(accountLabel, doubleEncryptionPassword)
+                accountDataManager.createNewAccount(accountLabel, doubleEncryptionPassword, seedHex)
                         .doOnSubscribe(disposable -> dataListener.showProgressDialog(R.string.please_wait))
                         .subscribe(account -> {
                             dataListener.dismissProgressDialog();

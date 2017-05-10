@@ -43,6 +43,12 @@
                 android:layout_weight="50"
                 android:orientation="vertical">
 
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Watch only version (Seed stored on device)"/>
+
                 <Button
                     android:id="@+id/create"
                     style="@style/ButtonStyle"
@@ -69,6 +75,7 @@
                     android:paddingRight="48dp"
                     android:paddingTop="16dp"
                     android:text="@string/log_in"
+                    android:visibility="gone"
                     android:theme="@style/ButtonBlueTheme" />
 
                 <TextView

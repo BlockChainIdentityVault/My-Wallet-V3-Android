@@ -45,12 +45,12 @@ public class AccountDataManagerTest extends RxTest {
     public void createNewAccount() throws Exception {
         // Arrange
         Account mockAccount = mock(Account.class);
-        when(payloadService.createNewAccount(anyString(), isNull()))
+        when(payloadService.createNewAccount(anyString(), isNull(), isNull()))
                 .thenReturn(Observable.just(mockAccount));
         // Act
-        TestObserver<Account> observer = subject.createNewAccount("", null).test();
+        TestObserver<Account> observer = subject.createNewAccount("", null, null).test();
         // Assert
-        verify(payloadService).createNewAccount("", null);
+        verify(payloadService).createNewAccount("", null, null);
         observer.assertNoErrors();
         observer.assertComplete();
         assertEquals(mockAccount, observer.values().get(0));

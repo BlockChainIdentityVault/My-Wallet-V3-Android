@@ -122,13 +122,13 @@ public class PinEntryViewModelTest {
         when(activity.getPageIntent()).thenReturn(intent);
         when(prefsUtil.getValue(PrefsUtil.KEY_PIN_IDENTIFIER, "")).thenReturn("");
         when(fingerprintHelper.getEncryptedData(PrefsUtil.KEY_ENCRYPTED_PIN_CODE)).thenReturn("");
-        when(authDataManager.createHdWallet(anyString(), anyString(), eq(email)))
-                .thenReturn(just(new Wallet()));
+        when(authDataManager.createWatchOnlyHdWallet(anyString(), anyString(), eq(email)))
+                .thenReturn(just(new String()));
         // Act
         subject.onViewReady();
         // Assert
         assertEquals(false, subject.allowExit());
-        verify(authDataManager).createHdWallet(anyString(), anyString(), eq(email));
+        verify(authDataManager).createWatchOnlyHdWallet(anyString(), anyString(), eq(email));
         verify(activity).showProgressDialog(anyInt(), anyString());
         verify(activity).dismissProgressDialog();
         verify(prefsUtil).setValue(PrefsUtil.KEY_EMAIL, email);
@@ -157,7 +157,7 @@ public class PinEntryViewModelTest {
         when(activity.getPageIntent()).thenReturn(intent);
         when(prefsUtil.getValue(PrefsUtil.KEY_PIN_IDENTIFIER, "")).thenReturn("");
         when(fingerprintHelper.getEncryptedData(PrefsUtil.KEY_ENCRYPTED_PIN_CODE)).thenReturn("");
-        when(authDataManager.createHdWallet(anyString(), anyString(), eq(email)))
+        when(authDataManager.createWatchOnlyHdWallet(anyString(), anyString(), eq(email)))
                 .thenReturn(Observable.error(new Throwable()));
         // Act
         subject.onViewReady();

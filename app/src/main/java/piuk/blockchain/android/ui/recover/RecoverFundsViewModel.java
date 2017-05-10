@@ -77,7 +77,7 @@ public class RecoverFundsViewModel extends BaseViewModel {
             return;
         }
 
-        authDataManager.restoreHdWallet(email, password, recoveryPhrase)
+        authDataManager.restoreWatchOnlyHdWallet(email, password, recoveryPhrase)
                 .doOnSubscribe(ignored -> dataListener.showProgressDialog(R.string.creating_wallet))
                 .doAfterTerminate(() -> dataListener.dismissProgressDialog())
                 .subscribe(

@@ -82,6 +82,21 @@ public class PayloadDataManager {
     }
 
     /**
+     * Restores a HD wallet from a 12 word mnemonic and initializes the {@link PayloadDataManager}.
+     * Also creates a new Blockchain.info account in the process.
+     *
+     * @param mnemonic   The 12 word mnemonic supplied as a String of words separated by whitespace
+     * @param walletName The name of the wallet, usually a default name localised by region
+     * @param email      The user's email address, preferably not associated with another account
+     * @param password   The user's choice of password
+     * @return Seed      The hexadecimal seed of recovered wallet
+     */
+    public Observable<String> restoreWatchOnlyHdWallet(String mnemonic, String walletName, String email, String password) {
+        return rxPinning.call(() -> payloadService.restoreWatchOnlyHdWallet(mnemonic, walletName, email, password))
+                .compose(RxUtil.applySchedulersToObservable());
+    }
+
+    /**
      * Creates a new HD wallet and Blockchain.info account.
      *
      * @param password   The user's choice of password
@@ -91,6 +106,19 @@ public class PayloadDataManager {
      */
     public Observable<Wallet> createHdWallet(String password, String walletName, String email) {
         return rxPinning.call(() -> payloadService.createHdWallet(password, walletName, email))
+                .compose(RxUtil.applySchedulersToObservable());
+    }
+
+    /**
+     * Creates a new HD watch only wallet and Blockchain.info account.
+     *
+     * @param password   The user's choice of password
+     * @param walletName The name of the wallet, usually a default name localised by region
+     * @param email      The user's email address, preferably not associated with another account
+     * @return An {@link Observable<Wallet>}
+     */
+    public Observable<String> createWatchOnlyHdWallet(String password, String walletName, String email) {
+        return rxPinning.call(() -> payloadService.createWatchOnlyHdWallet(password, walletName, email))
                 .compose(RxUtil.applySchedulersToObservable());
     }
 

@@ -70,6 +70,22 @@ public class PayloadService {
     }
 
     /**
+     * Restores a HD watch only wallet from a 12 word mnemonic and initializes the {@link PayloadDataManager}.
+     * Also creates a new Blockchain.info account in the process.
+     *
+     * @param mnemonic   The 12 word mnemonic supplied as a String of words separated by whitespace
+     * @param walletName The name of the wallet, usually a default name localised by region
+     * @param email      The user's email address, preferably not associated with another account
+     * @param password   The user's choice of password
+     * @return Seed      The hexadecimal seed of recovered wallet
+     */
+    @WebRequest
+    public Observable<String> restoreWatchOnlyHdWallet(String mnemonic, String walletName, String email, String password) {
+        return Observable.fromCallable(() ->
+                payloadManager.recoverWatchOnlyFromMnemonic(mnemonic, walletName, email, password));
+    }
+
+    /**
      * Creates a new HD wallet and Blockchain.info account.
      *
      * @param password   The user's choice of password
@@ -80,6 +96,19 @@ public class PayloadService {
     @WebRequest
     public Observable<Wallet> createHdWallet(String password, String walletName, String email) {
         return Observable.fromCallable(() -> payloadManager.create(walletName, email, password));
+    }
+
+    /**
+     * Creates a new HD watch only wallet and Blockchain.info account.
+     *
+     * @param password   The user's choice of password
+     * @param walletName The name of the wallet, usually a default name localised by region
+     * @param email      The user's email address, preferably not associated with another account
+     * @return An {@link Observable<Wallet>}
+     */
+    @WebRequest
+    public Observable<String> createWatchOnlyHdWallet(String password, String walletName, String email) {
+        return Observable.fromCallable(() -> payloadManager.createWatchOnly(walletName, email, password));
     }
 
     /**
@@ -235,8 +264,8 @@ public class PayloadService {
      * @return An {@link Observable<Account>} wrapping the newly created Account
      */
     @WebRequest
-    public Observable<Account> createNewAccount(String accountLabel, @Nullable String secondPassword) {
-        return Observable.fromCallable(() -> payloadManager.addAccount(accountLabel, secondPassword));
+    public Observable<Account> createNewAccount(String accountLabel, @Nullable String secondPassword, @Nullable String seedHex) {
+        return Observable.fromCallable(() -> payloadManager.addAccount(accountLabel, secondPassword, seedHex));
     }
 
     /**

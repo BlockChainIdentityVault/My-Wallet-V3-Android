@@ -269,11 +269,11 @@ class PayloadServiceTest : RxTest() {
         val label = "LABEL"
         val secondPassword = "SECOND_PASSWORD"
         val mockAccount: Account = mock()
-        whenever(mockPayloadManager.addAccount(label, secondPassword)).thenReturn(mockAccount)
+        whenever(mockPayloadManager.addAccount(label, secondPassword, null)).thenReturn(mockAccount)
         // Act
-        val testObserver = subject.createNewAccount(label, secondPassword).test()
+        val testObserver = subject.createNewAccount(label, secondPassword, null).test()
         // Assert
-        verify(mockPayloadManager).addAccount(label, secondPassword)
+        verify(mockPayloadManager).addAccount(label, secondPassword, null)
         verifyNoMoreInteractions(mockPayloadManager)
         testObserver.assertComplete()
         testObserver.assertValue(mockAccount)

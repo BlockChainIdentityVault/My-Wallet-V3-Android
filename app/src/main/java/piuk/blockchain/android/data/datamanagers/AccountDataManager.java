@@ -35,8 +35,8 @@ public class AccountDataManager {
      * @param secondPassword An optional double encryption password
      * @return An {@link Observable<Account>} wrapping the newly created Account
      */
-    public Observable<Account> createNewAccount(String accountLabel, @Nullable String secondPassword) {
-        return rxPinning.call(() -> payloadService.createNewAccount(accountLabel, secondPassword))
+    public Observable<Account> createNewAccount(String accountLabel, @Nullable String secondPassword, @Nullable String seedHex) {
+        return rxPinning.call(() -> payloadService.createNewAccount(accountLabel, secondPassword, seedHex))
                 .compose(RxUtil.applySchedulersToObservable());
     }
 

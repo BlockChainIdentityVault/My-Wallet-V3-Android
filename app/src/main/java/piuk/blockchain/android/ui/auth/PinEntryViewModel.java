@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.annotation.UiThread;
 import android.support.annotation.VisibleForTesting;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -153,7 +154,7 @@ public class PinEntryViewModel extends BaseViewModel {
                         // If funds recovered, wallet already restored, no need to overwrite payload
                         // with another new wallet
                         mDataListener.showProgressDialog(R.string.create_wallet, "...");
-                        createWallet();
+                        createWatchOnlyWallet();
                     }
                 }
             }
@@ -485,13 +486,23 @@ public class PinEntryViewModel extends BaseViewModel {
         }
     }
 
-    private void createWallet() {
+//    private void createWallet() {
+//        mAppUtil.applyPRNGFixes();
+//        compositeDisposable.add(
+//                mAuthDataManager.createHdWallet(mPassword, mStringUtils.getString(R.string.default_wallet_name), mEmail)
+//                        .doAfterTerminate(() -> mDataListener.dismissProgressDialog())
+//                        .subscribe(payload -> {
+//                            // No-op
+//                        }, throwable -> showErrorToastAndRestartApp(R.string.hd_error)));
+//    }
+
+    private void createWatchOnlyWallet() {
         mAppUtil.applyPRNGFixes();
         compositeDisposable.add(
-                mAuthDataManager.createHdWallet(mPassword, mStringUtils.getString(R.string.default_wallet_name), mEmail)
+                mAuthDataManager.createWatchOnlyHdWallet(mPassword, mStringUtils.getString(R.string.default_wallet_name), mEmail)
                         .doAfterTerminate(() -> mDataListener.dismissProgressDialog())
-                        .subscribe(payload -> {
-                            // No-op
+                        .subscribe(seedHex -> {
+                            //No-op
                         }, throwable -> showErrorToastAndRestartApp(R.string.hd_error)));
     }
 
